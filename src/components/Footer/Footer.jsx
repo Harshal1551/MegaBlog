@@ -4,40 +4,44 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className=" from-blue-50 to-white border-t py-12 mt-20 text-gray-700">
+    <footer className="bg-gradient-to-b from-blue-50 to-white border-t py-10 mt-20 text-gray-700">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* About Section */}
           <div>
-            <h2 className="text-xl font-semibold text-blue-700 mb-2">MegaBlog</h2>
+            <h2 className="text-xl font-semibold text-blue-700 mb-3">MegaBlog</h2>
             <p className="text-sm text-gray-500 leading-relaxed">
               MegaBlog is your creative space to write, share your thoughts, and connect with readers across the world. Whether it's tech, life, or poetry — we got you.
             </p>
           </div>
 
           {/* Navigation */}
-          <div className="flex flex-col space-y-2 text-sm">
-            <h3 className="text-md font-semibold text-blue-700 mb-1">Quick Links</h3>
-            <Link to="/" className="hover:text-blue-600 transition-all">
-              Home
-            </Link>
-            <Link to="/all-posts" className="hover:text-blue-600 transition-all">
-              Posts
-            </Link>
-            <Link to="/add-post" className="hover:text-blue-600 transition-all">
-              Write
-            </Link>
+          <div className="mt-6 sm:mt-0">
+            <h3 className="text-md font-semibold text-blue-700 mb-3">Quick Links</h3>
+            <div className="flex flex-col space-y-2 text-sm">
+              <Link to="/" className="hover:text-blue-600 transition-all">
+                Home
+              </Link>
+              <Link to="/all-posts" className="hover:text-blue-600 transition-all">
+                Posts
+              </Link>
+              <Link to="/add-post" className="hover:text-blue-600 transition-all">
+                Write
+              </Link>
+            </div>
           </div>
 
           {/* Social / Contact */}
-          <div className="flex flex-col space-y-3 text-sm">
-            <h3 className="text-md font-semibold text-blue-700 mb-1">Connect</h3>
-            <p className="text-gray-500">Email: contact@megablog.com</p>
-            <div className="flex space-x-4">
-              {/* Social icons (mock icons with emoji for now) */}
-              <a href="#" className="text-gray-600 hover:text-blue-600 text-lg transition-all">🌐</a>
-              <a href="#" className="text-gray-600 hover:text-blue-600 text-lg transition-all">🐦</a>
-              <a href="#" className="text-gray-600 hover:text-blue-600 text-lg transition-all">📷</a>
+          <div className="mt-6 sm:mt-0">
+            <h3 className="text-md font-semibold text-blue-700 mb-3">Connect</h3>
+            <div className="text-sm space-y-2">
+              <p className="text-gray-500">Email: contact@megablog.com</p>
+              <div className="flex gap-4">
+                <a href="#" className="text-gray-600 hover:text-blue-600 text-lg transition-all">🌐</a>
+                <a href="#" className="text-gray-600 hover:text-blue-600 text-lg transition-all">🐦</a>
+                <a href="#" className="text-gray-600 hover:text-blue-600 text-lg transition-all">📷</a>
+              </div>
             </div>
           </div>
         </div>
