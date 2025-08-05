@@ -16,6 +16,7 @@ import EditPost from "./pages/EditPost";
 import Post from "./pages/Post";
 import Dashboard from './pages/Dashboard.jsx'
 import AllPosts from "./pages/AllPosts";
+import Profile from './pages/Profile.jsx'
 
 const router = createBrowserRouter([
   {
@@ -74,9 +75,23 @@ const router = createBrowserRouter([
             element: <Post />,
         },
         {
-            path: "/dashboard",
-            element: <Dashboard />,
-        },
+             path: "/dashboard",
+           element: (
+              <AuthLayout authentication>
+                  <Dashboard />
+              </AuthLayout>
+              ),
+         },
+         {
+           path: "/profile",
+           element: (
+             <AuthLayout authentication>
+               <Profile />
+             </AuthLayout>
+           ),
+         },
+         
+
     ],
 },
 ])

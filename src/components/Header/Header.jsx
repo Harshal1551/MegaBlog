@@ -14,7 +14,6 @@ function Header() {
     { name: 'All Posts', slug: '/all-posts', active: authStatus },
     { name: 'Add Post', slug: '/add-post', active: authStatus },
     { name: 'Dashboard', slug: '/dashboard', active: authStatus },
-
   ]
 
   return (
@@ -45,6 +44,19 @@ function Header() {
                     </button>
                   </li>
                 )
+            )}
+
+            {/* Profile Icon */}
+            {authStatus && (
+              <li>
+                <Link
+                  to="/profile"
+                  className="flex items-center px-3 py-1.5 rounded-full bg-gray-100 hover:bg-blue-100 transition text-gray-700 hover:text-blue-600"
+                  title="My Profile"
+                >
+                  👤
+                </Link>
+              </li>
             )}
 
             {/* Logout Button */}

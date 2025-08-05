@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Logo } from "../components/index"; // assuming you have a logo component
+import { Logo } from "../components/index"; 
 
 function Dashboard() {
   const authStatus = useSelector((state) => state.auth.status);

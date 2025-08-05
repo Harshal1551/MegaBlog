@@ -22,21 +22,16 @@ export default function Post() {
                 else navigate("/");
             });
         } else navigate("/");
-    }, [slug, navigate]);
+     }, [slug, navigate]);
 
     const deletePost = () => {
         appwriteService.deletePost(post.$id).then((status) => {
             if (status) {
                 appwriteService.deleteFile(post.featuredimage);
-                navigate("/");
+                navigate(-1);
             }
         });
     };
-
-    console.log("👤 Post:", post);
-    console.log("👤 UserData:", userData);
-    console.log("👀 isAuthor:", isAuthor);
-
 
     return post ? (
        <div className="py-8">

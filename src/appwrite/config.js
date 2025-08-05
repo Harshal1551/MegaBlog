@@ -15,13 +15,13 @@ export class Service{
     }
 
 
-    async createPost({ title, slug, content, featuredimage, status, userId }) {
+    async createPost({ title, slug, content, featuredimage, status, userid, username }) {
          console.log("🔍 Payload to Appwrite:", {
              title,
              content,
              featuredimage,
              status,
-             userId,
+             userid,
          });
 
      try {
@@ -34,7 +34,8 @@ export class Service{
                 content,
                 featuredimage,
                 status,
-                 userid: userId,
+                userid,
+                username,
             }
           );
        } catch (error) {
@@ -147,6 +148,44 @@ export class Service{
  getFileView(fileId) {
   return this.bucket.getFileView(conf.appwriteBucketId, fileId);
 }
+
+
+//// LIKES AND COMMENTS 
+
+
+async updatePostLikes(postId, change) {
+  try {
+    // Get the current post document
+    const post = await this.databases.getDocument(
+      conf.appwriteDatabaseId,
+      conf.appwriteCollectionId,
+      postId
+    );
+
+    // Ensure likes is a number (default to 0)
+    const currentLikes = post.likes || 0;
+
+    // Calculate new like count
+    const updatedLikes = currentLikes + change;
+
+    // Update the document with new like count
+    const updatedPost = await this.databases.updateDocument(
+      conf.appwriteDatabaseId,
+      conf.appwriteCollectionId,
+      postId,
+      {
+        likes: updatedLikes
+      }
+    );
+
+    return updatedPost;
+
+  } catch (error) {
+    console.error("Appwrite Service :: updatePostLikes :: error", error);
+    return null;
+  }
+}
+
 
 }
 

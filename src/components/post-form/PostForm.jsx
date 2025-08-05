@@ -82,7 +82,8 @@ export default function PostForm({ post }) {
                     content: data.content,
                     featuredimage: file.$id,
                     status: data.status,
-                    userId: userData.$id,
+                    userid: userData.$id,
+                    username: userData.name,
                 });
 
                 if (newPost) {
