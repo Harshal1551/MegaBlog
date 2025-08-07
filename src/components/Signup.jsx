@@ -1,32 +1,64 @@
-import React, { useState } from 'react'
-import authService from '../appwrite/auth'
-import { Link, useNavigate } from 'react-router-dom'
-import { login } from '../store/authSlice'
-import { Button, Input, Logo } from './index.js'
-import { useDispatch } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import service from '../appwrite/config';
+import React, { useState } from 'react';
+import authService from '../appwrite/auth';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../store/authSlice';
+import { Button, Input, Logo } from './index.js';
+import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import conf from '../conf/conf';
 
 function Signup() {
-  const navigate = useNavigate()
-  const [error, setError] = useState("")
-  const dispatch = useDispatch()
-  const { register, handleSubmit } = useForm()
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm();
+
+ const createUserIfNotExists = async (user) => {
+  try {
+    const response = await service.databases.createDocument(
+      conf.appwriteDatabaseId,
+      conf.appwriteUsersId,
+      user.$id,  // Using user's Appwrite ID as the document ID
+      {
+        name: user.name,
+        email: user.email,
+        theme: "light",
+      }
+    );
+
+    return response; // Return document (if needed)
+  } catch (error) {
+    if (error.message.includes("already exists")) return;
+    console.error("Error creating user document:", error.message);
+  }
+}
+
 
   const create = async (data) => {
-    setError("")
-    try {
-      const session = await authService.createAccount(data)
-      if (session) {
-        const userData = await authService.getCurrentUser()
-        if (userData) {
-          dispatch(login({userData}))
-          navigate("/dashboard")
-        }
+  setError("");
+  try {
+    const session = await authService.createAccount(data);
+    if (session) {
+      const userData = await authService.getCurrentUser();
+      if (userData) {
+        await createUserIfNotExists(userData);
+
+        // Now store Appwrite document ID (same as $id) in userData object
+        const fullUserData = {
+          ...userData,
+          userid: userData.$id, // Add userid key (used in ThemeToggle)
+        };
+
+        dispatch(login({ userData: fullUserData }));
+        navigate("/dashboard");
       }
-    } catch (error) {
-      setError(error.message || "Signup failed")
     }
+  } catch (error) {
+    setError(error.message || "Signup failed");
   }
+};
+
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -77,7 +109,7 @@ function Signup() {
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default Signup
+export default Signup;

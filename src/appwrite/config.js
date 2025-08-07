@@ -1,15 +1,17 @@
 import conf from '../conf/conf.js';
-import { Client, ID, Databases, Storage, Query, Permission, Role } from "appwrite";
+import { Client, Account, ID, Databases, Storage, Query, Permission, Role } from "appwrite";
 
 export class Service{
     client = new Client();
     databases;
     bucket;
+    account;
     
     constructor(){
         this.client
         .setEndpoint(conf.appwriteUrl)
         .setProject(conf.appwriteProjectId);
+          this.account = new Account(this.client);
         this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
     }
@@ -184,8 +186,30 @@ async updatePostLikes(postId, change) {
     console.error("Appwrite Service :: updatePostLikes :: error", error);
     return null;
   }
-}
+}  
 
+ /// Toggle Theme 
+  
+   async createUserDoc({ userid, name, email, theme }) {
+       try {
+         const response = await this.databases.createDocument(
+           conf.appwriteDatabaseId,
+           conf.appwriteUsersId,   
+           userid,                 
+           { name, email, theme },
+           [
+             Permission.read(Role.user(userid)),
+             Permission.update(Role.user(userid)),
+           ]
+         )
+         console.log("✅ User document created in Appwrite:", response);
+         return response;
+       } catch (error) {
+         console.error("❌ Failed to create user doc in Appwrite:", error);
+         throw error;
+     }
+    }
+    
 
 }
 

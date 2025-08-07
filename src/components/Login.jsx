@@ -5,6 +5,8 @@ import { Button, Input, Logo } from './index'
 import { useDispatch } from 'react-redux'
 import authService from '../appwrite/auth'
 import { useForm } from 'react-hook-form'
+import service from '../appwrite/config'  // Import Appwrite service
+import conf from '../conf/conf'
 
 function Login() {
   const navigate = useNavigate()
@@ -12,20 +14,41 @@ function Login() {
   const { register, handleSubmit } = useForm()
   const [error, setError] = useState("")
 
+
+  const createUserIfNotExists = async (user) => {
+    try {
+      await service.databases.createDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersId,
+        user.$id,
+        {
+          name: user.name,
+          email: user.email,
+          theme: "light", 
+        }
+      );
+    } catch (error) {
+      if (error.message.includes("already exists")) return;
+      console.error("Error creating user document:", error.message);
+    }
+  }
+
   const login = async (data) => {
     setError("")
     try {
       const session = await authService.login(data)
       if (session) {
         const userData = await authService.getCurrentUser()
-        if (userData) dispatch(authLogin({userData}))
-         navigate("/dashboard")
+        if (userData) {
+          await createUserIfNotExists(userData)
+          dispatch(authLogin({ userData }))
+          navigate("/dashboard")
+        }
       }
     } catch (error) {
       setError(error.message)
     }
   }
-
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -75,5 +98,3 @@ function Login() {
 }
 
 export default Login
-
-

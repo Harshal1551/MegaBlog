@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     status : false,
-    userData: null
+    userData: null,
+     theme: "light",
 }
 
 const authSlice = createSlice({
@@ -16,10 +17,14 @@ const authSlice = createSlice({
         logout: (state) => {
             state.status = false;
             state.userData = null;
-        }
+        },
+        setTheme: (state, action) => {
+            state.theme = action.payload;
+        },
+
      }
 })
 
-export const {login, logout} = authSlice.actions;
-
+export const selectUserData = (state) => state.auth.userData;
+export const {login, logout, setTheme} = authSlice.actions;
 export default authSlice.reducer;

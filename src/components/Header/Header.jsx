@@ -3,6 +3,7 @@ import { Container, Logo, LogoutBtn } from '../index';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import ThemeToggle from '../ThemeToggle';
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -59,8 +60,12 @@ function Header() {
                   </Link>
                 </li>
                 <li>
+                  <ThemeToggle />
+                </li>
+                <li>
                   <LogoutBtn />
                 </li>
+
               </>
             )}
           </ul>
@@ -132,8 +137,12 @@ function Header() {
                       </Link>
                     </li>
                     <li>
+                      <ThemeToggle />
+                     </li>
+                    <li>
                       <LogoutBtn />
                     </li>
+                    
                   </>
                 )}
               </ul>
